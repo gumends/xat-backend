@@ -16,7 +16,7 @@ datasource db {
 model usersEntity {
   id        String @id @default(uuid())
   firstName String
-  lastname  String
+  lastName  String
   email     String
   password  String
 

@@ -13,7 +13,7 @@ export class UsersService {
             select: {
                 id: true,
                 firstName: true,
-                lastname: true,
+                lastName: true,
                 email: true
             }
         })

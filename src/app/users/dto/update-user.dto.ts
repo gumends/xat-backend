@@ -5,5 +5,5 @@ export class UpdateUserDto {
     firstName: string
 
     @IsNotEmpty()
-    lastname: string
+    lastName: string
 }
