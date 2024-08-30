@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import {compare, hash} from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -18,22 +19,14 @@ export class UsersService {
         })
     }
     
-    async findOne(
-        id: string
-    ) {
-        const user = await this.prisma.usersEntity.findUnique({
+    async findOneOrThrow(id: string) {
+        const user = await this.prisma.usersEntity.findFirstOrThrow({
             where: {
-                id
-            },
-            select: {
-                id: true,
-                firstName: true,
-                lastname: true,
-                email: true
+                email: id
             }
         })
-        if (!user) throw new Error('User not found')
-            return user
+        if (!user) throw new ForbiddenException('User not found')
+        return user
     }
 
     async update(id: string, data: UpdateUserDto) {
@@ -48,11 +41,11 @@ export class UsersService {
     }    
     
     async store(data: CreateUserDto) {
-        const user = await this.prisma.usersEntity.create({
-            data
-        })
-        if (!user) throw new Error('User not found')
-        return user
+        const hashedPassword = await hash(data.password, 10);
+        const userData = { ...data, password: hashedPassword };
+        return this.prisma.usersEntity.create({
+            data: userData,
+        });
     }
 
     async destroy( id: string) {
