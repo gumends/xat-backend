@@ -15,11 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
             secretOrKey: process.env.JWT_SECRET,
         });
     }
-
-    teste() {
-        console.log('teste');
-    }
-
+    
     async validate(payload: UsuarioPayload): Promise<UsersEntity> {
         console.log(payload);
         const userEntity = await this.usuarioService.buscaPorId(payload.id);

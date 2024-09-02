@@ -7,9 +7,13 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
-  @Get(':id')
+  @Get('buscar/:id')
   buscaPorId(@Param('id') id: string) {
     return this.usuarioService.buscaPorId(id);
   }
 
+  @Post("criar")
+  criar(@Body() data: CreateUsuarioDto) {
+    return this.usuarioService.criar(data);
+  }
 }

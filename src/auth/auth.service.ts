@@ -16,7 +16,7 @@ export class AuthService {
     };
 
     return {
-      tojken: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
     }
   }
   async validateUser(email: string, password: string) {
@@ -26,7 +26,6 @@ export class AuthService {
     } catch (error) {
       return null;
     }
-
     const isMatch = compareSync(password, user.password);
     if (!isMatch) return null;
     return user
