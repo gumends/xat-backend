@@ -17,4 +17,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     // @Matches(regexHelper.password, { message: 'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial' })
     password: string
+
+    avatar?: string
 }

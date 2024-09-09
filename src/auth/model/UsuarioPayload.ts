@@ -3,4 +3,5 @@ export interface UsuarioPayload {
     email: string;
     firstName: string;
     lastName: string;
+    avatar?: string;
 }

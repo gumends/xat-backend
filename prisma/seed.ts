@@ -11,6 +11,7 @@ async function main() {
       firstName: 'nome',
       lastName: 'sobrenome',
       password: await hash('123', 10),
+      avatar: 'https://github.com/gumends.png'
     },
   })
   console.log({ firstLogin })

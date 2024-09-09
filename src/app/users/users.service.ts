@@ -2,11 +2,11 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import {compare, hash} from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async findAll() {
         return await this.prisma.usersEntity.findMany({
@@ -18,7 +18,7 @@ export class UsersService {
             }
         })
     }
-    
+
     async findOneOrThrow(id: string) {
         const user = await this.prisma.usersEntity.findFirstOrThrow({
             where: {
@@ -38,17 +38,20 @@ export class UsersService {
         })
         if (!user) throw new Error('User not found')
         return user
-    }    
-    
+    }
+
     async store(data: CreateUserDto) {
         const hashedPassword = await hash(data.password, 10);
         const userData = { ...data, password: hashedPassword };
         return this.prisma.usersEntity.create({
-            data: userData,
+            data: {
+                ...userData,
+                avatar: userData.avatar || null
+            },
         });
     }
 
-    async destroy( id: string) {
+    async destroy(id: string) {
         const user = await this.prisma.usersEntity.delete({
             where: {
                 id

@@ -21,7 +21,10 @@ export class UsuarioService {
     const hashedPassword = await hash(data.password, 10);
     const userData = { ...data, password: hashedPassword };
     const usuario = await this.prisma.usersEntity.create({
-      data: userData,
+      data: {
+        ...userData,
+        avatar: userData.avatar || null, // set avatar to null if it's undefined
+      },
     });
 
     if (!usuario) throw new ForbiddenException('Usuário não criado');
