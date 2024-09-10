@@ -8,8 +8,8 @@ async function main() {
     update: {},
     create: {
       email: 'inicial@inicial.io',
-      firstName: 'nome',
-      lastName: 'sobrenome',
+      nome: 'nome',
+      sobreNome: 'sobrenome',
       password: await hash('123', 10),
       avatar: 'https://github.com/gumends.png'
     },

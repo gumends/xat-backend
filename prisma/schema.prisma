@@ -14,15 +14,49 @@ datasource db {
 }
 
 model UsersEntity {
-  id        String @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String
-  password  String
-  avatar    String?
+  id                String @id @default(uuid())
+  nome              String
+  sobreNome         String
+  email             String
+  password          String
+  avatar            String?
+  status            Int    @default(0)
+
+  conversas         Conversas[]
+
+  sessionsUm        Sessao[] @relation("SessionUserUm")
+  sessionsDois      Sessao[] @relation("SessionUserDois")
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("usersEntity")
 }
+
+model Sessao {
+  id                  String @id @default(uuid())
+  
+  usuario_id_I        String
+  userOne             UsersEntity @relation("SessionUserUm", fields: [usuario_id_I], references: [id])
+
+  usuario_id_II       String
+  userTwo             UsersEntity @relation("SessionUserDois", fields: [usuario_id_II], references: [id])
+
+  conversa            Conversas[]
+
+  @@map("sessao")
+}
+
+model Conversas {
+  id                  String @id @default(uuid())
+  texto               String
+
+  usuario_id          String
+  usersEntity         UsersEntity @relation(fields: [usuario_id], references: [id])
+
+  sessao_id           String
+  sessao              Sessao @relation(fields: [sessao_id], references: [id])
+
+  @@map("conversas")
+}
+
