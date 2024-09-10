@@ -23,14 +23,49 @@ export class SessoesService {
     if (!sessao) throw new ForbiddenException('Sessão não criada');
     return sessao;
   }
-
-  //Buscar todas as sessões do usuario
   async buscaSessoes(id: string) {
     const sessoes = await this.prisma.sessao.findMany({
-      where: { id }
+      where: {
+        OR: [
+          { usuario_id_I: id },
+          { usuario_id_II: id }
+        ]
+      },
+      include: {
+        userOne: {
+          select: {
+            id: true,
+            nome: true,
+            sobreNome: true,
+            email: true
+          }
+        },
+        userTwo: {
+          select: {
+            id: true,
+            nome: true,
+            sobreNome: true,
+            email: true
+          }
+        }
+      }
     });
-    if (!sessoes) throw new ForbiddenException('Nenhuma sessão encontrada');
-    return sessoes;
+
+    
+    const resultado = sessoes.map(sessao => {
+    
+      if (sessao.usuario_id_I === id) {
+        return { sessao_id: sessao.id, usuario_id: sessao.usuario_id_II, usuario: sessao.userTwo };
+      } else {
+        return { sessao_id: sessao.id, usuario_id: sessao.usuario_id_I, usuario: sessao.userOne };
+      }
+    });
+    if (resultado.length === 0) {
+      throw new ForbiddenException('Nenhuma sessão encontrada');
+    }
+  
+    return resultado;
   }
+  
 
 }
