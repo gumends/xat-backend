@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ConversasService } from './conversas.service';
 import { CreateConversaDto } from './dto/create-conversa.dto';
 import { UpdateConversaDto } from './dto/update-conversa.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('conversas')
 export class ConversasController {

@@ -12,7 +12,7 @@ export class SessoesController {
     return this.sessoesService.criarSessao(createSessoeDto);
   }
 
-  @Get(':id')
+  @Get('buscar/:id')
   buscaSessoes(@Param('id') id: string) {
     return this.sessoesService.buscaSessoes(id);
   }
