@@ -16,4 +16,29 @@ export class UsuarioController {
   criar(@Body() data: CreateUsuarioDto) {
     return this.usuarioService.criar(data);
   }
+
+  @Patch('atualizar/:id')
+  atualizar(@Param('id') id: string, @Body() data: UpdateUsuarioDto) {
+    return this.usuarioService.atualizar(id, data);
+  }
+
+  @Patch('ativar_desativar/:id')
+  ativar_desativer(@Param('id') id: string) {
+    return this.usuarioService.ativar_desdativar(id);
+  }
+
+  @Get('contato/:email')
+  buscarContato(@Param('email') email: string) {
+    return this.usuarioService.buscarContato(email);
+  }
+
+  @Patch('atualizar_senha/:id')
+  async atualizarSenha(@Param('id') id: string, @Body() password: string) {
+    return this.usuarioService.atualizarSenha(id, password);
+  }
+
+  @Delete('apagar/:id')
+  apagar(@Param('id') id: string) {
+    return this.usuarioService.apagarUsuario(id);
+  }
 }

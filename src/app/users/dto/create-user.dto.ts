@@ -5,10 +5,10 @@ export class CreateUserDto {
     id: string
 
     @IsNotEmpty()
-    firstName: string
+    nome: string
 
     @IsNotEmpty()
-    lastName: string
+    sobreNome: string
 
     @IsNotEmpty()
     @IsEmail()

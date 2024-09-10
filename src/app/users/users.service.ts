@@ -12,8 +12,8 @@ export class UsersService {
         return await this.prisma.usersEntity.findMany({
             select: {
                 id: true,
-                firstName: true,
-                lastName: true,
+                nome: true,
+                sobreNome: true,
                 email: true
             }
         })
