@@ -60,7 +60,15 @@ export class UsuarioService {
 
   async buscarContato( email: string ) {
     const contato = await this.prisma.usersEntity.findFirst({
-      where: { email }
+      where: { email },
+      select: { 
+        id: true,
+        nome: true,
+        sobreNome: true,
+        email: true,
+        status: true,
+        avatar: true
+      }
     })
     if (!contato) { throw new ForbiddenException('Contato não encontrado'); }
     return contato
@@ -79,9 +87,7 @@ export class UsuarioService {
   }
 
   async apagarUsuario(id: string) {
-    const usuario = await this.prisma.usersEntity.delete({
-      where: { id }
-    })
+    const usuario = await this.prisma.usersEntity.delete({ where: { id } })
     if (!usuario) { throw new ForbiddenException('Usuário não encontrado'); }
     return usuario
   }
