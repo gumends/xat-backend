@@ -13,22 +13,10 @@ export class ConversasService {
     return novaConversa;
   }
 
-  async buscarConversa(id1: string, id2: string) {
-    const sessao_id = await this.prisma.sessao.findFirst({
-      where: {
-        OR: [
-          { usuario_id_I: id1, usuario_id_II: id2 },
-          { usuario_id_I: id2, usuario_id_II: id1 }
-        ]
-      },
-      select: {
-        id: true
-      }
-    })
-    if (!sessao_id) { throw new ForbiddenException('Nenhuma conversa encontrada'); }
+  async buscarConversa(id: string) {
     const conversas = await this.prisma.conversas.findMany({
       where: {
-        sessao_id: sessao_id.id
+        sessao_id: id
       }
     })
     if (!conversas) { throw new ForbiddenException('Conversa não encontrada'); }

@@ -23,6 +23,8 @@ export class SessoesService {
     if (!sessao) throw new ForbiddenException('Sessão não criada');
     return sessao;
   }
+
+
   async buscaSessoes(id: string) {
     const sessoes = await this.prisma.sessao.findMany({
       where: {
@@ -63,7 +65,8 @@ export class SessoesService {
     if (resultado.length === 0) {
       throw new ForbiddenException('Nenhuma sessão encontrada');
     }
-  
+    
+    
     return resultado;
   }
   

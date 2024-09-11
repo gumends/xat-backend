@@ -13,9 +13,9 @@ export class ConversasController {
     return this.conversasService.criarConversa(createConversaDto);
   }
 
-  @Get('buscar/:id1/:id2')
-  buscarConversa(@Param('id1') id1: string, @Param('id2') id2: string) {
-    return this.conversasService.buscarConversa(id1, id2);
+  @Get('buscar/:id')
+  buscarConversa(@Param('id') id: string) {
+    return this.conversasService.buscarConversa(id);
   }
 
   @Delete('apagar/:id1/:id2')
