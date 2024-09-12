@@ -6,9 +6,9 @@ import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsuarioService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
   async buscaPorId(id: string) {
-    const usuario = await this.prisma.usersEntity.findUnique({
+    const usuario = await this.prisma.usuarios.findUnique({
       where: { id },
     });
     if (!usuario) {
@@ -17,10 +17,10 @@ export class UsuarioService {
     return usuario;
   }
 
-  async criar (data: CreateUsuarioDto) {
+  async criar(data: CreateUsuarioDto) {
     const hashedPassword = await hash(data.password, 10);
     const userData = { ...data, password: hashedPassword };
-    const usuario = await this.prisma.usersEntity.create({
+    const usuario = await this.prisma.usuarios.create({
       data: {
         ...userData,
         avatar: userData.avatar || null, // set avatar to null if it's undefined
@@ -33,7 +33,7 @@ export class UsuarioService {
   }
 
   async atualizar(id: string, data: UpdateUsuarioDto) {
-    const usuario = await this.prisma.usersEntity.update({
+    const usuario = await this.prisma.usuarios.update({
       where: { id },
       data: {
         ...data
@@ -44,11 +44,11 @@ export class UsuarioService {
   }
 
   async ativar_desdativar(id: string) {
-    const statusUsuario = await this.prisma.usersEntity.findUnique({
+    const statusUsuario = await this.prisma.usuarios.findUnique({
       where: { id },
       select: { status: true }
     })
-    const usuario = await this.prisma.usersEntity.update({
+    const usuario = await this.prisma.usuarios.update({
       where: { id },
       data: {
         status: statusUsuario ? 0 : 1
@@ -58,13 +58,12 @@ export class UsuarioService {
     return usuario
   }
 
-  async buscarContato( email: string ) {
-    const contato = await this.prisma.usersEntity.findFirst({
+  async buscarContato(email: string) {
+    const contato = await this.prisma.usuarios.findFirst({
       where: { email },
-      select: { 
+      select: {
         id: true,
         nome: true,
-        sobreNome: true,
         email: true,
         status: true,
         avatar: true
@@ -76,7 +75,7 @@ export class UsuarioService {
 
   async atualizarSenha(id: string, password: string) {
     const hashedPassword = await hash(password, 10);
-    const usuario = await this.prisma.usersEntity.update({
+    const usuario = await this.prisma.usuarios.update({
       where: { id },
       data: {
         password: hashedPassword
@@ -87,8 +86,41 @@ export class UsuarioService {
   }
 
   async apagarUsuario(id: string) {
-    const usuario = await this.prisma.usersEntity.delete({ where: { id } })
+    const usuario = await this.prisma.usuarios.delete({ where: { id } })
     if (!usuario) { throw new ForbiddenException('Usuário não encontrado'); }
     return usuario
+  }
+
+  async buscarTodos(
+    busca: string
+  ) {
+    const searchParams = {
+      ...(busca ?
+        {
+          OR: [
+            { nome: { contains: busca } },
+            { email: { contains: busca } }
+          ]
+        } :
+        {}),
+    };
+
+    const usuarios = await this.prisma.usuarios.findMany({
+      where: {
+        AND: [
+          searchParams,
+          { status: 0 }
+        ]
+      },
+      select: {
+        avatar: true,
+        id: true,
+        nome: true,
+        email: true
+      }
+    })
+
+    if (!usuarios) { throw new ForbiddenException('Usuário não encontrado'); }
+    return usuarios
   }
 }
