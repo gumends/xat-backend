@@ -38,7 +38,6 @@ export class SessoesService {
           select: {
             id: true,
             nome: true,
-            sobreNome: true,
             email: true
           }
         },
@@ -46,7 +45,6 @@ export class SessoesService {
           select: {
             id: true,
             nome: true,
-            sobreNome: true,
             email: true
           }
         }

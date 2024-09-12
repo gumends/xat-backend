@@ -9,18 +9,17 @@ export class UsersService {
     constructor(private prisma: PrismaService) { }
 
     async findAll() {
-        return await this.prisma.usersEntity.findMany({
+        return await this.prisma.usuarios.findMany({
             select: {
                 id: true,
                 nome: true,
-                sobreNome: true,
                 email: true
             }
         })
     }
 
     async findOneOrThrow(id: string) {
-        const user = await this.prisma.usersEntity.findFirstOrThrow({
+        const user = await this.prisma.usuarios.findFirstOrThrow({
             where: {
                 email: id
             }
@@ -30,7 +29,7 @@ export class UsersService {
     }
 
     async update(id: string, data: UpdateUserDto) {
-        const user = await this.prisma.usersEntity.update({
+        const user = await this.prisma.usuarios.update({
             where: {
                 id
             },
@@ -43,7 +42,7 @@ export class UsersService {
     async store(data: CreateUserDto) {
         const hashedPassword = await hash(data.password, 10);
         const userData = { ...data, password: hashedPassword };
-        return this.prisma.usersEntity.create({
+        return this.prisma.usuarios.create({
             data: {
                 ...userData,
                 avatar: userData.avatar || null
@@ -52,7 +51,7 @@ export class UsersService {
     }
 
     async destroy(id: string) {
-        const user = await this.prisma.usersEntity.delete({
+        const user = await this.prisma.usuarios.delete({
             where: {
                 id
             }

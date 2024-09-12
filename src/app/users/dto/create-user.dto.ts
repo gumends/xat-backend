@@ -8,9 +8,6 @@ export class CreateUserDto {
     nome: string
 
     @IsNotEmpty()
-    sobreNome: string
-
-    @IsNotEmpty()
     @IsEmail()
     email: string
 

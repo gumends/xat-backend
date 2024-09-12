@@ -2,7 +2,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { UsuarioPayload } from "../model/UsuarioPayload";
-import { UsersEntity } from '@prisma/client';
+import { Usuarios } from '@prisma/client';
 import { UsuarioService } from 'src/usuario/usuario.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         });
     }
     
-    async validate(payload: UsuarioPayload): Promise<UsersEntity> {
+    async validate(payload: UsuarioPayload): Promise<Usuarios> {
         console.log(payload);
         const userEntity = await this.usuarioService.buscaPorId(payload.id);
         console.log(userEntity);

@@ -1,8 +1,7 @@
 -- CreateTable
-CREATE TABLE "usersEntity" (
+CREATE TABLE "usuarios" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "nome" TEXT NOT NULL,
-    "sobreNome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "avatar" TEXT,
@@ -18,8 +17,8 @@ CREATE TABLE "sessao" (
     "usuario_id_II" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
-    CONSTRAINT "sessao_usuario_id_I_fkey" FOREIGN KEY ("usuario_id_I") REFERENCES "usersEntity" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "sessao_usuario_id_II_fkey" FOREIGN KEY ("usuario_id_II") REFERENCES "usersEntity" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "sessao_usuario_id_I_fkey" FOREIGN KEY ("usuario_id_I") REFERENCES "usuarios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "sessao_usuario_id_II_fkey" FOREIGN KEY ("usuario_id_II") REFERENCES "usuarios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -30,6 +29,6 @@ CREATE TABLE "conversas" (
     "sessao_id" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
-    CONSTRAINT "conversas_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "usersEntity" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "conversas_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "usuarios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "conversas_sessao_id_fkey" FOREIGN KEY ("sessao_id") REFERENCES "sessao" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
