@@ -48,10 +48,12 @@ export class SessoesService {
             email: true
           }
         }
+      },
+      orderBy: {
+        updated_at: 'desc'
       }
     });
 
-    
     const resultado = sessoes.map(sessao => {
     
       if (sessao.usuario_id_I === id) {
