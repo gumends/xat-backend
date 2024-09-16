@@ -10,6 +10,14 @@ export class ConversasService {
   async criarConversa(conversa: CreateConversaDto) {
     const novaConversa = await this.prisma.conversas.create({ data: conversa });
     if(!novaConversa) throw new ForbiddenException('Conversa não criada');
+    await this.prisma.sessao.update({
+      where: {
+        id: conversa.sessao_id
+      },
+      data: {
+        updated_at: new Date()
+      }
+    })
     return novaConversa;
   }
 
